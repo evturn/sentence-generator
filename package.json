@@ -1,0 +1,17 @@
+{
+  "name": "sentence-generator",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src --out-file lib/index.js"
+  },
+  "author": "Evan Turner <ev@evturn.com>",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-core": "^6.5.2",
+    "babel-preset-es2015": "^6.5.0"
+  }
+}
