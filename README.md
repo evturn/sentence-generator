@@ -1,5 +1,10 @@
 ## Sentence Generator
 
+### Install
+```bash
+npm install --save sentence-generator
+```
+
 ### Setup
 ```javascript
 import 'SentenceGenerator' from 'sentence-generator';
