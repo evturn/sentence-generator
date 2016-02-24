@@ -6,8 +6,23 @@
   "scripts": {
     "build": "babel src --out-file lib/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evturn/sentence-generator.git"
+  },
+  "keywords": [
+    "markov",
+    "markov-chain",
+    "sentence",
+    "generator",
+    "sentence-generator"
+  ],
   "author": "Evan Turner <ev@evturn.com>",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evturn/sentence-generator/issues"
+  },
+  "homepage": "https://github.com/evturn/sentence-generator#readme",
   "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.5.1",
