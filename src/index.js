@@ -2,46 +2,32 @@ import fs from 'fs';
 import path from 'path';
 
 function SentenceGenerator(options) {
-  this.files = assureDataType(options.files);
-  this.wordCount = options.wordCount || 10;
-  this.wordTree = {};
+  this.file = options.file;
+  this.count = options.count || 10;
+  this.tree = {};
   this.sentence = '';
 
-  Promise.all(this.concatWordsToSentence())
-    .then(values => {
-      const [sentence] = values;
-
-      return options.success(sentence);
-    });
+  this.init();
 }
 
-SentenceGenerator.prototype.concatWordsToSentence = function() {
-  return this.files.map(file => {
-    return new Promise((resolve, reject) => {
-      fs.readFile(file, 'utf8', (err, data) => {
-        if (err) {
-          reject(err);
-        }
+SentenceGenerator.prototype.init = function() {
+  const data = fs.readFileSync(this.file).toString();
+  let currentWord = capitalize(this.createTree(data));
+  this.sentence = currentWord;
 
-        let currentWord = capitalize(this.createWordTree(data));
-        this.sentence = currentWord;
+  while (this.tree[currentWord] && !this.shouldStopWriting()) {
+    currentWord = select(this.tree[currentWord]);
+    this.sentence += ' ' + currentWord;
+  }
 
-        while (this.wordTree[currentWord] && !this.shouldStopWriting()) {
-          currentWord = select(this.wordTree[currentWord]);
-          this.sentence += ' ' + currentWord;
-        }
-
-        resolve(this.sentence.trim());
-      })
-    })
-  });
+  return this.sentence.trim();
 };
 
 SentenceGenerator.prototype.shouldStopWriting = function() {
-  return this.sentence.split(' ').length > this.wordCount - 2;
+  return this.sentence.split(' ').length > this.count - 2;
 };
 
-SentenceGenerator.prototype.createWordTree = function(data) {
+SentenceGenerator.prototype.createTree = function(data) {
   injectNewlines(data.toString()).forEach(lines => {
       lines
         .split(' ')
@@ -50,23 +36,24 @@ SentenceGenerator.prototype.createWordTree = function(data) {
           let current = normalize(words[i]);
           let next = normalize(words[i + 1]);
 
-          if (!this.wordTree[current]) {
-            this.wordTree[current] = {};
+          if (!this.tree[current]) {
+            this.tree[current] = {};
           }
 
-          if (!this.wordTree[current][next]) {
-            this.wordTree[current][next] = 1;
+          if (!this.tree[current][next]) {
+            this.tree[current][next] = 1;
           } else {
-            this.wordTree[current][next] += 1;
+            this.tree[current][next] += 1;
           }
         });
     });
 
-  return this.wordTree;
+  return this.tree;
 };
 
 module.exports = function createSentenceGenerator(options) {
   return function generator() {
-    return new SentenceGenerator(options);
+    const gen = new SentenceGenerator(options);
+    return gen.sentence;
   }
 };

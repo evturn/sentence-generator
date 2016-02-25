@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/sentence-generator.svg)](https://www.npmjs.com/package/sentence-generator)
+
 ## Sentence Generator
 
 ### Install
@@ -10,11 +12,8 @@ npm install --save sentence-generator
 import 'SentenceGenerator' from 'sentence-generator';
 
 const opts = {
-  files: 'content.txt',      // from path where node instance is running
-  success(sentence) {        // callback executed when sentence is created
-    console.log(sentence);
-  },
-  wordCount: 7               // max allowed words per sentence (defaults to 10)
+  file: 'content.txt', // from path where node instance is running
+  count: 7             // max allowed words per sentence (defaults to 10)
 };
 
 const content = SentenceGenerator(opts);
