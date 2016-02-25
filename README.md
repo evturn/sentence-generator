@@ -1,4 +1,5 @@
 [![npm version](https://badge.fury.io/js/sentence-generator.svg)](https://www.npmjs.com/package/sentence-generator)
+[![Dependency Status](https://david-dm.org/evturn/sentence-generator.svg)](https://www.npmjs.com/package/sentence-generator)
 
 ## Sentence Generator
 
