@@ -4,7 +4,9 @@
   "description": "Markov-chain inspired sentence generator",
   "main": "index.js",
   "scripts": {
-    "build": "babel src --out-file lib/index.js"
+    "start": "babel-node test",
+    "build": "babel src --out-file lib/index.js",
+    "watch": "babel src --watch --out-file lib/index.js"
   },
   "repository": {
     "type": "git",

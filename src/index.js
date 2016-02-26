@@ -2,8 +2,11 @@ import fs from 'fs';
 import path from 'path';
 
 function SentenceGenerator(options) {
-  this.file = options.file;
-  this.count = options.count || 10;
+  const { file, count, punctuation } = options;
+
+  this.file = file;
+  this.count = count || 10;
+  this.punctuation = punctuation || false;
   this.tree = {};
   this.sentence = '';
 
@@ -12,6 +15,7 @@ function SentenceGenerator(options) {
 
 SentenceGenerator.prototype.init = function() {
   const data = fs.readFileSync(this.file).toString();
+
   let currentWord = capitalize(this.createTree(data));
   this.sentence = currentWord;
 
@@ -20,7 +24,9 @@ SentenceGenerator.prototype.init = function() {
     this.sentence += ' ' + currentWord;
   }
 
-  return this.sentence.trim();
+  this.sentence = this.punctuation ? punctuate(this.sentence.trim()) : this.sentence.trim();
+
+  return this.sentence;
 };
 
 SentenceGenerator.prototype.shouldStopWriting = function() {
@@ -28,24 +34,22 @@ SentenceGenerator.prototype.shouldStopWriting = function() {
 };
 
 SentenceGenerator.prototype.createTree = function(data) {
-  injectNewlines(data.toString()).forEach(lines => {
-      lines
-        .split(' ')
-        .filter(word => word.trim() !== '')
-        .map((word, i, words) => {
-          let current = normalize(words[i]);
-          let next = normalize(words[i + 1]);
+  splitDataIntoSentences(data).forEach(sentence => {
+    sentence.split(' ').filter(word => word.trim() !== '')
+      .map((word, i, words) => {
+        let current = normalize(words[i]);
+        let next = normalize(words[i + 1]);
 
-          if (!this.tree[current]) {
-            this.tree[current] = {};
-          }
+        if (!this.tree[current]) {
+          this.tree[current] = {};
+        }
 
-          if (!this.tree[current][next]) {
-            this.tree[current][next] = 1;
-          } else {
-            this.tree[current][next] += 1;
-          }
-        });
+        if (!this.tree[current][next]) {
+          this.tree[current][next] = 1;
+        } else {
+          this.tree[current][next] += 1;
+        }
+      });
     });
 
   return this.tree;

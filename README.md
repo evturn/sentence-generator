@@ -14,7 +14,8 @@ import 'SentenceGenerator' from 'sentence-generator';
 
 const opts = {
   file: 'content.txt', // from path where node instance is running
-  count: 7             // max allowed words per sentence (defaults to 10)
+  count: 7,            // max allowed words per sentence (defaults to 10)
+  puncation: true      // end sentence with '.' if no terminating puncation (!, ?, etc) exists (defaults to false)
 };
 
 const content = SentenceGenerator(opts);

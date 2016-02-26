@@ -6,7 +6,13 @@ const normalize = (word) => {
   return word.replace(/\.$/ig, '');
 };
 
-const injectNewlines = (file) => {
+const punctuate = (sentence) => {
+  const hasPunctuation = /(!|\?|,|;|-|\(|&|:|\.)$/.test(sentence);
+
+  return hasPunctuation ? sentence : `${sentence}.`;
+};
+
+const splitDataIntoSentences = (file) => {
   return file.split(/(?:\. |\n)/ig);
 };
 
