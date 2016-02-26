@@ -13,9 +13,9 @@ npm install --save sentence-generator
 import 'SentenceGenerator' from 'sentence-generator';
 
 const opts = {
-  file: 'content.txt', // from path where node instance is running
-  count: 7,            // max allowed words per sentence (defaults to 10)
-  puncation: true      // end sentence with '.' if no terminating puncation (!, ?, etc) exists (defaults to false)
+  file: 'content.txt',
+  count: 7,
+  punctuation: true
 };
 
 const content = SentenceGenerator(opts);
@@ -23,4 +23,35 @@ const content = SentenceGenerator(opts);
 const sentence1 = content();
 const sentence2 = content();
 const sentence3 = content();
+```
+
+## Options
+
+### `file`
+
+Filename of the content to be read
+
+```javascript
+file: 'content.txt'
+
+// If the file is located outside of your project's root directory
+// include the filepath from where your node instance is running.
+// An example of this looks like 'project/assets/content.txt'
+```
+
+### `count`
+
+Max allowed words per sentence
+
+Default: `10`
+```javascript
+count: 7
+```
+
+### `punctuation`
+Default: `false`
+
+Terminate sentence with a period (unless '?', '!', or another '.' already exists)
+```javascript
+punctuation: true
 ```

@@ -1,6 +1,6 @@
 {
   "name": "sentence-generator",
-  "version": "0.1.01",
+  "version": "0.1.2",
   "description": "Markov-chain inspired sentence generator",
   "main": "index.js",
   "scripts": {
