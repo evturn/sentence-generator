@@ -7,21 +7,31 @@ function SentenceGenerator(options) {
   this.file = file;
   this.count = count || 10;
   this.punctuation = punctuation || false;
-  this.tree = {};
-  this.sentence = '';
-
   this.init();
 }
 
 SentenceGenerator.prototype.init = function() {
   const data = fs.readFileSync(this.file).toString();
+  this.tree = {};
 
-  let currentWord = capitalize(this.createTree(data));
-  this.sentence = currentWord;
+  splitDataIntoSentences(data).forEach(sentence => {
+    sentence.split(' ')
+      .filter(word => word.trim() !== '')
+      .map((word, i, words) => this.mapWordsByAppearance(i, words));
+    });
 
-  while (this.tree[currentWord] && !this.shouldStopWriting()) {
-    currentWord = select(this.tree[currentWord]);
-    this.sentence += ' ' + currentWord;
+  return this;
+};
+
+SentenceGenerator.prototype.write = function() {
+  this.sentence = '';
+
+  let word = beginCapitalized(this.tree);
+  this.sentence = word;
+
+  while (this.tree[word] && !this.shouldStopWriting()) {
+    word = select(this.tree[word]);
+    this.sentence += ' ' + word;
   }
 
   this.sentence = this.punctuation ? punctuate(this.sentence.trim()) : this.sentence.trim();
@@ -33,31 +43,25 @@ SentenceGenerator.prototype.shouldStopWriting = function() {
   return this.sentence.split(' ').length > this.count - 2;
 };
 
-SentenceGenerator.prototype.createTree = function(data) {
-  splitDataIntoSentences(data).forEach(sentence => {
-    sentence.split(' ').filter(word => word.trim() !== '')
-      .map((word, i, words) => {
-        let current = normalize(words[i]);
-        let next = normalize(words[i + 1]);
+SentenceGenerator.prototype.mapWordsByAppearance = function(idx, words) {
+  const current = normalize(words[idx]);
+  const next = normalize(words[idx + 1]);
 
-        if (!this.tree[current]) {
-          this.tree[current] = {};
-        }
+  if (!this.tree[current]) {
+    this.tree[current] = {};
+  }
 
-        if (!this.tree[current][next]) {
-          this.tree[current][next] = 1;
-        } else {
-          this.tree[current][next] += 1;
-        }
-      });
-    });
-
-  return this.tree;
+  if (!this.tree[current][next]) {
+    this.tree[current][next] = 1;
+  } else {
+    this.tree[current][next] += 1;
+  }
 };
 
 module.exports = function createSentenceGenerator(options) {
+  const sentenceGenerator = new SentenceGenerator(options)
+
   return function generator() {
-    const gen = new SentenceGenerator(options);
-    return gen.sentence;
-  }
+    return sentenceGenerator.write();
+  };
 };
