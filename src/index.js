@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import compose from './compose'
 import createGenerator from './instance'
 
 export default filepath => {
@@ -22,10 +23,4 @@ function readFile(path) {
 
 function stringifyFile(file) {
   return file.toString()
-}
-
-function compose(...fns) {
-  const firstFn = fns[fns.length - 1]
-  const remainingFns = fns.slice(0, -1)
-  return x => remainingFns.reduceRight((acc, fn) => fn(acc), firstFn(x))
 }

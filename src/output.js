@@ -1,8 +1,14 @@
-export default function sentenceGenerator(content) {
-  const data = content
-    .split(/(?:\. |\n)/ig)
-    .map(splitOnWhitespace)
-    .filter(x => x.length)
+import compose from './compose'
+
+export default content => {
+  const createGenerator = compose(
+    removeEmptyValues,
+    replaceTerminatingPeriods,
+    splitOnWhitespace,
+    splitOnEOL
+  )
+
+  const data = createGenerator(content)
     .reduce((acc, xs) => {
       xs.map(mapWordToContext(xs))
         .filter(x => x.next)
@@ -13,11 +19,20 @@ export default function sentenceGenerator(content) {
   return _ => selectNextRecurse(data)
 }
 
-function splitOnWhitespace(line) {
-  return line
-    .split(' ')
-    .map(x => x.replace(/\.$/ig, '').trim())
-    .filter(x => !!x)
+function splitOnEOL(xs) {
+  return xs.split(/(?:\. |\n)/ig)
+}
+
+function splitOnWhitespace(xs) {
+  return xs.map(x => x.split(' '))
+}
+
+function replaceTerminatingPeriods(xs) {
+  return xs.map(ys => ys.map(y => y.replace(/\.$/ig, '').trim()))
+}
+
+function removeEmptyValues(xs) {
+  return xs.filter(x => !!x || x.length)
 }
 
 function mapWordToContext(xs) {

@@ -4,6 +4,12 @@
 
 An API of 5 methods which provide granular control over the output of newly generated sentences.
 
+- [`take`](https://github.com/evturn/sentence-generator#takecount-number-string)
+- [`run`](https://github.com/evturn/sentence-generator#run-string)
+- [`generate`](https://github.com/evturn/sentence-generator#generate-string)
+- [`clear`](https://github.com/evturn/sentence-generator#clear-void)
+- [`unwrap`](https://github.com/evturn/sentence-generator#unwrap-string)
+
 ## Install
 
 `npm install sentence-generator`
@@ -16,11 +22,11 @@ An API of 5 methods which provide granular control over the output of newly gene
 import 'Gen' from 'sentence-generator'
 
 const gen = Gen('src/content.txt')
-// will resolve to Users/ev/project/src/content.txt
+// will resolve to Users/whatevz/project/src/content.txt
 ```
 
 ###### src/content.txt
-Assume these are the contents of the file resolved at `filepath`:
+Assume this is the contents of the file resolved at `filepath`:
 > I go to preschool university. We never talk enough about pencil sharpeners. Speak now or forever hold this for one second. It's a collection of paper bags full of plastic bags. This is what I like to think about when I eat dead leaves. Seriously, what's up with all those cookies? My grandmother never owned a rancid juicebar. That is a real homemade sandwich if I've ever seen one. I have to admit that I have never driven this car with my eyes open.
 
 ## API
@@ -87,7 +93,7 @@ function writeText() {
 ```
 
 #### `unwrap(): String`
-- Returns the current persisted state.
+Returns the current persisted state.
 ```javascript
 
 gen.generate()
