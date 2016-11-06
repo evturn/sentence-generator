@@ -14,10 +14,11 @@ An API of 5 methods which provide granular control over the output of newly gene
 
 `npm install sentence-generator`
 
-## Use
+## Initializing
+
+#### `(filepath: string): Object`
 
 ###### index.js
-#### `(filepath: string): Object`
 ```javascript
 import 'Gen' from 'sentence-generator'
 
@@ -41,7 +42,7 @@ console.log(a)
 ```
 
 #### `run(): String`
-Returns one sentence leaving any interal persisted state unmutated.
+Returns one sentence leaving any internal state unmutated.
 ```javascript
 const a = gen.take(3)
 const b = gen.run()
@@ -103,6 +104,6 @@ gen.generate()
 
 // equivalent to calling `gen.take(4)`
 
-const result = gen.unwrap())
+const result = gen.unwrap()
 /* Returns a string of four sentences */
 ```

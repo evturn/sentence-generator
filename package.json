@@ -1,12 +1,11 @@
 {
   "name": "sentence-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Markov-chain inspired sentence generator",
   "main": "lib/index.js",
   "scripts": {
     "start": "babel-node test",
-    "build": "babel src --out-file lib/index.js",
-    "watch": "babel src --watch --out-file lib/index.js"
+    "build": "babel src -d lib"
   },
   "repository": {
     "type": "git",
